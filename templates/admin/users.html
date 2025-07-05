@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Manage Users</h2>
+<table>
+  <thead>
+    <tr><th>Username</th><th>Admin</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.username }}</td>
+      <td>{{ 'Yes' if u.is_admin else 'No' }}</td>
+      <td>
+        {% if u.id != current_user.id %}
+        <form method="post" style="display:inline">
+          <button name="delete" value="{{ u.id }}" onclick="return confirm('Delete user?')">Delete</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p><a href="{{ url_for('admin_dashboard') }}">Back</a></p>
+{% endblock %}

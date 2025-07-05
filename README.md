@@ -1,6 +1,6 @@
 # E-Commerce Flask App
 
-This is a simple e-commerce web application using Flask. It supports user registration, login, product listing, shopping carts and order history.
+This is a simple e-commerce web application using Flask. It supports user registration, login, product listing, shopping carts and order history. An admin interface allows management of users, products and orders.
 
 ## Features
 
@@ -39,3 +39,7 @@ python app.py
 ```
 
 Visit `http://127.0.0.1:5000` in your browser.
+
+## Admin Login
+
+An initial admin user is created automatically with username `admin` and password `admin`. Use this account to access the `/admin` area for managing data.
