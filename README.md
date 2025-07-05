@@ -25,4 +25,17 @@ This is a simple e-commerce web application using Flask. It supports user regist
    python app.py
    ```
 
+## Database schema changes
+
+If you alter the models and the schema changes, the existing `db.sqlite3` file
+may no longer be compatible. You can either run migrations or simply remove the
+database file so a new one is created on the next run.
+
+Example of recreating the database:
+
+```bash
+rm db.sqlite3
+python app.py
+```
+
 Visit `http://127.0.0.1:5000` in your browser.
