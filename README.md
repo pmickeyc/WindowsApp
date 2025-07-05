@@ -1,6 +1,13 @@
 # E-Commerce Flask App
 
-This is a simple e-commerce web application using Flask. It supports user registration, login, and product listing.
+This is a simple e-commerce web application using Flask. It supports user registration, login, product listing, shopping carts and order history.
+
+## Features
+
+- Browse products by category
+- Add items to a shopping cart
+- Checkout and create orders
+- View past orders from the profile page
 
 ## Setup
 
