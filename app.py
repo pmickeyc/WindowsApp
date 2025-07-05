@@ -33,8 +33,8 @@ class Product(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-@app.before_first_request
 def create_tables():
+    """Create database tables and seed sample data if needed."""
     db.create_all()
     if not Product.query.first():
         db.session.add(Product(name='Sample Item', price=9.99))
@@ -85,4 +85,6 @@ def profile():
     return render_template('profile.html', user=current_user)
 
 if __name__ == '__main__':
+    with app.app_context():
+        create_tables()
     app.run(debug=True)
