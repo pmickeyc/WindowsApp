@@ -11,6 +11,9 @@
     <a href="{{ url_for('cart_view') }}">Cart</a>
     {% if current_user.is_authenticated %}
         <span>Logged in as {{ current_user.username }}</span>
+        {% if current_user.is_admin %}
+            <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+        {% endif %}
         <a href="{{ url_for('profile') }}">Profile</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     {% else %}

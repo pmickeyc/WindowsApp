@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from functools import wraps
 import os
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(120), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -54,6 +56,16 @@ class OrderItem(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+def admin_required(f):
+    """Ensure the current user is an admin."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or not current_user.is_admin:
+            flash('Admin access required')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 def create_tables():
     """Create database tables and seed sample data if needed."""
     db.create_all()
@@ -61,6 +73,11 @@ def create_tables():
         default = Category(name='General')
         db.session.add(default)
         db.session.add(Product(name='Sample Item', price=9.99, category=default))
+        db.session.commit()
+    if not User.query.filter_by(username='admin').first():
+        admin = User(username='admin', is_admin=True)
+        admin.set_password('admin')
+        db.session.add(admin)
         db.session.commit()
 
 @app.route('/')
@@ -155,6 +172,55 @@ def logout():
 def profile():
     orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.created_at.desc()).all()
     return render_template('profile.html', user=current_user, orders=orders)
+
+
+@app.route('/admin')
+@admin_required
+def admin_dashboard():
+    user_count = User.query.count()
+    product_count = Product.query.count()
+    order_count = Order.query.count()
+    revenue = db.session.query(db.func.sum(OrderItem.price * OrderItem.quantity)).scalar() or 0
+    return render_template('admin/dashboard.html', user_count=user_count, product_count=product_count,
+                           order_count=order_count, revenue=revenue)
+
+
+@app.route('/admin/users', methods=['GET', 'POST'])
+@admin_required
+def manage_users():
+    if request.method == 'POST' and 'delete' in request.form:
+        uid = int(request.form['delete'])
+        if uid != current_user.id:
+            User.query.filter_by(id=uid).delete()
+            db.session.commit()
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
+
+
+@app.route('/admin/products', methods=['GET', 'POST'])
+@admin_required
+def manage_products():
+    if request.method == 'POST':
+        if 'delete' in request.form:
+            Product.query.filter_by(id=int(request.form['delete'])).delete()
+            db.session.commit()
+        else:
+            name = request.form['name']
+            price = float(request.form['price'])
+            cat_id = int(request.form['category']) if request.form.get('category') else None
+            category = Category.query.get(cat_id) if cat_id else None
+            db.session.add(Product(name=name, price=price, category=category))
+            db.session.commit()
+    products = Product.query.all()
+    categories = Category.query.all()
+    return render_template('admin/products.html', products=products, categories=categories)
+
+
+@app.route('/admin/orders')
+@admin_required
+def manage_orders():
+    orders = Order.query.order_by(Order.created_at.desc()).all()
+    return render_template('admin/orders.html', orders=orders)
 
 if __name__ == '__main__':
     with app.app_context():

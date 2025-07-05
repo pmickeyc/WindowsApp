@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Orders</h2>
+<table>
+  <thead>
+    <tr><th>Date</th><th>User</th><th>Items</th><th>Total</th></tr>
+  </thead>
+  <tbody>
+  {% for order in orders %}
+    <tr>
+      <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+      <td>{{ order.user_id }}</td>
+      <td>{{ order.items|length }}</td>
+      <td>
+        ${%- set tot = 0 -%}
+        {%- for item in order.items -%}
+            {%- set tot = tot + item.price * item.quantity -%}
+        {%- endfor -%}
+        {{ '%.2f'|format(tot) }}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p><a href="{{ url_for('admin_dashboard') }}">Back</a></p>
+{% endblock %}
