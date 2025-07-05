@@ -1,13 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Products</h2>
+
+<form method="get">
+  <select name="category" onchange="this.form.submit()">
+    <option value="">All Categories</option>
+    {% for cat in categories %}
+      <option value="{{ cat.id }}" {% if selected_category==cat.id|string %}selected{% endif %}>{{ cat.name }}</option>
+    {% endfor %}
+  </select>
+</form>
+
 <table>
   <thead>
-    <tr><th>Name</th><th>Price</th></tr>
+    <tr><th>Name</th><th>Price</th><th></th></tr>
   </thead>
   <tbody>
   {% for product in products %}
-    <tr><td>{{ product.name }}</td><td>${{ '%.2f'|format(product.price) }}</td></tr>
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>${{ '%.2f'|format(product.price) }}</td>
+      <td><a href="{{ url_for('add_to_cart', product_id=product.id) }}">Add to Cart</a></td>
+    </tr>
   {% endfor %}
   </tbody>
 </table>

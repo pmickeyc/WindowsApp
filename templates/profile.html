@@ -2,4 +2,29 @@
 {% block content %}
 <h2>Profile</h2>
 <p>Username: {{ user.username }}</p>
+<h3>Orders</h3>
+{% if orders %}
+<table>
+  <thead>
+    <tr><th>Date</th><th>Items</th><th>Total</th></tr>
+  </thead>
+  <tbody>
+  {% for order in orders %}
+    <tr>
+      <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+      <td>{{ order.items|length }}</td>
+      <td>
+        ${%- set total = 0 -%}
+        {%- for item in order.items -%}
+            {%- set total = total + item.price * item.quantity -%}
+        {%- endfor -%}
+        {{ '%.2f'|format(total) }}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No orders yet.</p>
+{% endif %}
 {% endblock %}

@@ -8,6 +8,7 @@
 <body>
 <header>
     <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('cart_view') }}">Cart</a>
     {% if current_user.is_authenticated %}
         <span>Logged in as {{ current_user.username }}</span>
         <a href="{{ url_for('profile') }}">Profile</a>
