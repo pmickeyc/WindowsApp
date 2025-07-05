@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Profile</h2>
-<p>Username: {{ user.username }}</p>
-<h3>Orders</h3>
+<h2 class="mb-4">Profile</h2>
+<p class="mb-4">Username: {{ user.username }}</p>
+<h3 class="mb-3">Orders</h3>
 {% if orders %}
-<table>
-  <thead>
+<table class="table table-striped">
+  <thead class="table-primary">
     <tr><th>Date</th><th>Items</th><th>Total</th></tr>
   </thead>
   <tbody>

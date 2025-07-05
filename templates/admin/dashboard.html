@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Admin Dashboard</h2>
-<ul>
-  <li>Total users: {{ user_count }}</li>
-  <li>Total products: {{ product_count }}</li>
-  <li>Total orders: {{ order_count }}</li>
-  <li>Total revenue: ${{ '%.2f'|format(revenue) }}</li>
+<h2 class="mb-4">Admin Dashboard</h2>
+<ul class="list-group mb-4">
+  <li class="list-group-item">Total users: {{ user_count }}</li>
+  <li class="list-group-item">Total products: {{ product_count }}</li>
+  <li class="list-group-item">Total orders: {{ order_count }}</li>
+  <li class="list-group-item">Total revenue: ${{ '%.2f'|format(revenue) }}</li>
 </ul>
-<nav>
-  <a href="{{ url_for('manage_users') }}">Manage Users</a> |
-  <a href="{{ url_for('manage_products') }}">Manage Products</a> |
-  <a href="{{ url_for('manage_orders') }}">View Orders</a>
+<nav class="mb-3">
+  <a class="btn btn-outline-primary me-2" href="{{ url_for('manage_users') }}">Manage Users</a>
+  <a class="btn btn-outline-primary me-2" href="{{ url_for('manage_products') }}">Manage Products</a>
+  <a class="btn btn-outline-primary" href="{{ url_for('manage_orders') }}">View Orders</a>
 </nav>
 {% endblock %}

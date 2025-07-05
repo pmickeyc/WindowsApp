@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Manage Products</h2>
-<form method="post">
-  <label>Name <input type="text" name="name" required></label>
-  <label>Price <input type="number" step="0.01" name="price" required></label>
-  <label>Category
-    <select name="category">
+<h2 class="mb-4">Manage Products</h2>
+<form method="post" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control" name="name" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Price</label>
+    <input type="number" step="0.01" class="form-control" name="price" required>
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Category</label>
+    <select name="category" class="form-select">
       {% for cat in categories %}
         <option value="{{ cat.id }}">{{ cat.name }}</option>
       {% endfor %}
     </select>
-  </label>
-  <button type="submit">Add</button>
+  </div>
+  <div class="col-md-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100">Add</button>
+  </div>
 </form>
-<table>
-  <thead>
+
+<table class="table table-striped">
+  <thead class="table-primary">
     <tr><th>Name</th><th>Price</th><th>Category</th><th></th></tr>
   </thead>
   <tbody>
@@ -25,12 +35,12 @@
       <td>{{ p.category.name if p.category else '' }}</td>
       <td>
         <form method="post" style="display:inline">
-          <button name="delete" value="{{ p.id }}" onclick="return confirm('Delete product?')">Delete</button>
+          <button class="btn btn-sm btn-danger" name="delete" value="{{ p.id }}" onclick="return confirm('Delete product?')">Delete</button>
         </form>
       </td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
-<p><a href="{{ url_for('admin_dashboard') }}">Back</a></p>
+<p><a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Back</a></p>
 {% endblock %}

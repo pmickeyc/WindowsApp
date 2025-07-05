@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Orders</h2>
-<table>
-  <thead>
+<h2 class="mb-4">Orders</h2>
+<table class="table table-striped">
+  <thead class="table-primary">
     <tr><th>Date</th><th>User</th><th>Items</th><th>Total</th></tr>
   </thead>
   <tbody>
@@ -22,5 +22,5 @@
   {% endfor %}
   </tbody>
 </table>
-<p><a href="{{ url_for('admin_dashboard') }}">Back</a></p>
+<p><a class="btn btn-secondary" href="{{ url_for('admin_dashboard') }}">Back</a></p>
 {% endblock %}
