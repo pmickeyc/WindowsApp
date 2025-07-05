@@ -1,0 +1,25 @@
+body {
+    background-color: #f5f9ff;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+table.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+form label {
+    margin-bottom: 0.5rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
